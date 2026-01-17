@@ -24,15 +24,20 @@ let globalObserver: MutationObserver | null = null;
 const observedElements = new Set<HTMLElement>();
 
 interface ElementClassManager {
-	element: HTMLElement;
-	sources: Map<number, { classes: Set<string>; order: number }>;
 	baseClasses: Set<string>;
+	element: HTMLElement;
+	hasInitialized: boolean;
 	isUpdating: boolean;
 	nextOrder: number;
-	hasInitialized: boolean;
+	sources: Map<number, { classes: Set<string>; order: number }>;
 }
 
 let sourceCounter = 0;
+
+interface ClassesOptions {
+	elementRef?: ElementRef<HTMLElement>;
+	injector?: Injector;
+}
 
 /**
  * This function dynamically adds and removes classes for a given element without requiring
@@ -66,12 +71,12 @@ export function classes(computed: () => ClassValue[] | string, options: ClassesO
 			}
 
 			manager = {
-				element,
-				sources: new Map(),
 				baseClasses: initialBaseClasses,
+				element,
+				hasInitialized: false,
 				isUpdating: false,
 				nextOrder: 0,
-				hasInitialized: false,
+				sources: new Map(),
 			};
 			elementClassManagers.set(element, manager);
 
@@ -120,6 +125,18 @@ export function classes(computed: () => ClassValue[] | string, options: ClassesO
 	});
 }
 
+function cleanupManager(element: HTMLElement): void {
+	// Remove from global tracking
+	observedElements.delete(element);
+	elementClassManagers.delete(element);
+
+	// If no more elements being tracked, cleanup global observer
+	if (observedElements.size === 0 && globalObserver) {
+		globalObserver.disconnect();
+		globalObserver = null;
+	}
+}
+
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
 function setupGlobalObserver(platformId: Object): void {
 	if (isPlatformBrowser(platformId) && !globalObserver) {
@@ -162,8 +179,8 @@ function setupGlobalObserver(platformId: Object): void {
 
 		// Start observing the entire document for class attribute changes
 		globalObserver.observe(document, {
-			attributes: true,
 			attributeFilter: ['class'],
+			attributes: true,
 			subtree: true, // Watch all descendants
 		});
 	}
@@ -218,27 +235,10 @@ function updateElement(manager: ElementClassManager): void {
 	manager.isUpdating = false;
 }
 
-function cleanupManager(element: HTMLElement): void {
-	// Remove from global tracking
-	observedElements.delete(element);
-	elementClassManagers.delete(element);
-
-	// If no more elements being tracked, cleanup global observer
-	if (observedElements.size === 0 && globalObserver) {
-		globalObserver.disconnect();
-		globalObserver = null;
-	}
-}
-
-interface ClassesOptions {
-	elementRef?: ElementRef<HTMLElement>;
-	injector?: Injector;
-}
-
 // Cache for parsed class lists to avoid repeated string operations
 const classListCache = new Map<string, string[]>();
 
-function toClassList(className: string | ClassValue[]): string[] {
+function toClassList(className: ClassValue[] | string): string[] {
 	// For simple string inputs, use cache to avoid repeated parsing
 	if (typeof className === 'string' && classListCache.has(className)) {
 		return classListCache.get(className)!;

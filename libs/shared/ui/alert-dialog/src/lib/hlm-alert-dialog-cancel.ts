@@ -3,12 +3,12 @@ import { HlmButton, provideBrnButtonConfig } from '@spartan-ng/helm/button';
 
 @Directive({
 	selector: 'button[hlmAlertDialogCancel]',
-	providers: [provideBrnButtonConfig({ variant: 'outline' })],
-	hostDirectives: [{ directive: HlmButton, inputs: ['variant', 'size'] }],
 	host: {
 		'[type]': 'type()',
 	},
+	hostDirectives: [{ directive: HlmButton, inputs: ['variant', 'size'] }],
+	providers: [provideBrnButtonConfig({ variant: 'outline' })],
 })
 export class HlmAlertDialogCancel {
-	public readonly type = input<'button' | 'submit' | 'reset'>('button');
+	public readonly type = input<'button' | 'reset' | 'submit'>('button');
 }

@@ -1,6 +1,8 @@
 import type { ComponentType } from '@angular/cdk/portal';
+
 import { inject, Injectable, type TemplateRef } from '@angular/core';
 import { type BrnDialogOptions, BrnDialogService, cssClassesToArray } from '@spartan-ng/brain/dialog';
+
 import { HlmDialogContent } from './hlm-dialog-content';
 import { hlmDialogOverlayClass } from './hlm-dialog-overlay';
 

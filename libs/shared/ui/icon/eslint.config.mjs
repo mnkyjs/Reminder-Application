@@ -1,4 +1,5 @@
 import nx from "@nx/eslint-plugin";
+
 import baseConfig from "../../../../eslint.config.mjs";
 
 export default [
@@ -10,20 +11,22 @@ export default [
             "**/*.ts"
         ],
         rules: {
-            "@angular-eslint/directive-selector": [
-                "error",
-                {
-                    type: "attribute",
-                    prefix: "hlm",
-                    style: "camelCase"
-                }
-            ],
+            "@angular-eslint/component-class-suffix": "off",
             "@angular-eslint/component-selector": [
                 "error",
                 {
-                    type: "element",
+                    style: "kebab-case",
                     prefix: "hlm",
-                    style: "kebab-case"
+                    type: "element"
+                }
+            ],
+            "@angular-eslint/directive-class-suffix": "off",
+            "@angular-eslint/directive-selector": [
+                "error",
+                {
+                    style: "camelCase",
+                    prefix: "hlm",
+                    type: "attribute"
                 }
             ],
             "@angular-eslint/no-input-rename": "off",
@@ -32,15 +35,13 @@ export default [
                   const r = baseConfig.find(c => c.rules && c.rules["@nx/enforce-module-boundaries"])?.rules["@nx/enforce-module-boundaries"];
                   return r ? [r[0], { ...r[1], allowCircularSelfDependency: true }] : undefined;
                 })(),
-            "@angular-eslint/directive-class-suffix": "off",
-            "@angular-eslint/component-class-suffix": "off",
             "@typescript-eslint/naming-convention": [
                 			"error",
                 			{
                 				"selector": "classProperty",
-                				"modifiers": ["protected"],
                 				"format": ["camelCase"],
-                				"leadingUnderscore": "require"
+                				"leadingUnderscore": "require",
+                				"modifiers": ["protected"]
                 			}
                 		]
         }
@@ -51,8 +52,8 @@ export default [
         ],
         // Override or add rules here
         rules: {
-            "@angular-eslint/template/interactive-supports-focus": "off",
-            "@angular-eslint/template/click-events-have-key-events": "off"
+            "@angular-eslint/template/click-events-have-key-events": "off",
+            "@angular-eslint/template/interactive-supports-focus": "off"
         }
     }
 ];

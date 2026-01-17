@@ -4,10 +4,10 @@ import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
 	selector: '[hlmDialogDescription]',
-	hostDirectives: [BrnDialogDescription],
 	host: {
 		'data-slot': 'dialog-description',
 	},
+	hostDirectives: [BrnDialogDescription],
 })
 export class HlmDialogDescription {
 	constructor() {

@@ -8,9 +8,6 @@ import { classes } from '@spartan-ng/helm/utils';
 @Component({
 	selector: 'hlm-option',
 	imports: [NgIcon, HlmIcon],
-	providers: [provideIcons({ lucideCheck })],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	hostDirectives: [{ directive: BrnSelectOption, inputs: ['disabled', 'value'] }],
 	template: `
 		<span class="absolute end-2 flex size-3.5 items-center justify-center">
 			@if (this._brnSelectOption.selected()) {
@@ -20,6 +17,9 @@ import { classes } from '@spartan-ng/helm/utils';
 
 		<ng-content />
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	hostDirectives: [{ directive: BrnSelectOption, inputs: ['disabled', 'value'] }],
+	providers: [provideIcons({ lucideCheck })],
 })
 export class HlmSelectOption {
 	protected readonly _brnSelectOption = inject(BrnSelectOption, { host: true });

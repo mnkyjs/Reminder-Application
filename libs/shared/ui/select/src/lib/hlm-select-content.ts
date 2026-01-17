@@ -1,21 +1,22 @@
 import type { BooleanInput } from '@angular/cdk/coercion';
-import { Directive, booleanAttribute, input } from '@angular/core';
+
+import { booleanAttribute, Directive, input } from '@angular/core';
 import { injectExposedSideProvider, injectExposesStateProvider } from '@spartan-ng/brain/core';
 import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
 	selector: '[hlmSelectContent], hlm-select-content',
 	host: {
-		'[attr.data-state]': '_stateProvider?.state() ?? "open"',
 		'[attr.data-side]': '_sideProvider?.side() ?? "bottom"',
+		'[attr.data-state]': '_stateProvider?.state() ?? "open"',
 	},
 })
 export class HlmSelectContent {
 	public readonly stickyLabels = input<boolean, BooleanInput>(false, {
 		transform: booleanAttribute,
 	});
-	protected readonly _stateProvider = injectExposesStateProvider({ optional: true });
 	protected readonly _sideProvider = injectExposedSideProvider({ optional: true });
+	protected readonly _stateProvider = injectExposesStateProvider({ optional: true });
 
 	constructor() {
 		classes(

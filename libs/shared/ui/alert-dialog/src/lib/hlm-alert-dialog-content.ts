@@ -5,12 +5,12 @@ import { classes } from '@spartan-ng/helm/utils';
 @Directive({
 	selector: '[hlmAlertDialogContent],hlm-alert-dialog-content',
 	host: {
-		'data-slot': 'alert-dialog-content',
 		'[attr.data-state]': 'state()',
+		'data-slot': 'alert-dialog-content',
 	},
 })
 export class HlmAlertDialogContent {
-	private readonly _stateProvider = injectExposesStateProvider({ optional: true, host: true });
+	private readonly _stateProvider = injectExposesStateProvider({ host: true, optional: true });
 	public readonly state = this._stateProvider?.state ?? signal('closed');
 
 	constructor() {

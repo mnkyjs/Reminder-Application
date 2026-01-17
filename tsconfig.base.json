@@ -1,75 +1,37 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@smartinsurtech-reminder/models": [
-        "libs/shared/models/src/index.ts"
-      ],
-      "@smartinsurtech-reminder/data-access": [
-        "libs/task/data-access/src/index.ts"
-      ],
-      "@smartinsurtech-reminder/feature-list": [
-        "libs/task/feature-list/src/index.ts"
-      ],
-      "@smartinsurtech-reminder/feature-edit": [
-        "libs/task/feature-edit/src/index.ts"
-      ],
-      "@smartinsurtech-reminder/ui": [
-        "libs/task/ui/src/index.ts"
-      ],
-      "@smartinsurtech-reminder/persistence": [
-        "libs/util/persistence/src/index.ts"
-      ],
-      "@spartan-ng/helm/input": [
-        "libs/shared/ui/input/src/index.ts"
-      ],
-      "@spartan-ng/helm/utils": [
-        "libs/shared/ui/utils/src/index.ts"
-      ],
-      "@spartan-ng/helm/card": [
-        "libs/shared/ui/card/src/index.ts"
-      ],
-      "@spartan-ng/helm/dialog": [
-        "libs/shared/ui/dialog/src/index.ts"
-      ],
-      "@spartan-ng/helm/icon": [
-        "libs/shared/ui/icon/src/index.ts"
-      ],
-      "@spartan-ng/helm/select": [
-        "libs/shared/ui/select/src/index.ts"
-      ],
-      "@spartan-ng/helm/label": [
-        "libs/shared/ui/label/src/index.ts"
-      ],
-      "@spartan-ng/helm/badge": [
-        "libs/shared/ui/badge/src/index.ts"
-      ],
-      "@spartan-ng/helm/alert-dialog": [
-        "libs/shared/ui/alert-dialog/src/index.ts"
-      ],
-      "@spartan-ng/helm/button": [
-        "libs/shared/ui/button/src/index.ts"
-      ]
-    }
-  },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2020", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@reminder/models": ["libs/shared/models/src/index.ts"],
+            "@reminder/data-access": ["libs/task/data-access/src/index.ts"],
+            "@reminder/feature-list": ["libs/task/feature-list/src/index.ts"],
+            "@reminder/feature-edit": ["libs/task/feature-edit/src/index.ts"],
+            "@reminder/ui": ["libs/task/ui/src/index.ts"],
+            "@reminder/persistence": ["libs/util/persistence/src/index.ts"],
+            "@spartan-ng/helm/input": ["libs/shared/ui/input/src/index.ts"],
+            "@spartan-ng/helm/utils": ["libs/shared/ui/utils/src/index.ts"],
+            "@spartan-ng/helm/card": ["libs/shared/ui/card/src/index.ts"],
+            "@spartan-ng/helm/dialog": ["libs/shared/ui/dialog/src/index.ts"],
+            "@spartan-ng/helm/icon": ["libs/shared/ui/icon/src/index.ts"],
+            "@spartan-ng/helm/select": ["libs/shared/ui/select/src/index.ts"],
+            "@spartan-ng/helm/label": ["libs/shared/ui/label/src/index.ts"],
+            "@spartan-ng/helm/badge": ["libs/shared/ui/badge/src/index.ts"],
+            "@spartan-ng/helm/alert-dialog": ["libs/shared/ui/alert-dialog/src/index.ts"],
+            "@spartan-ng/helm/button": ["libs/shared/ui/button/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

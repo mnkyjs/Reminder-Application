@@ -4,10 +4,10 @@ import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
 	selector: 'button[hlmDialogClose]',
-	hostDirectives: [{ directive: BrnDialogClose, inputs: ['delay'] }],
 	host: {
 		'data-slot': 'dialog-close',
 	},
+	hostDirectives: [{ directive: BrnDialogClose, inputs: ['delay'] }],
 })
 export class HlmDialogClose {
 	constructor() {

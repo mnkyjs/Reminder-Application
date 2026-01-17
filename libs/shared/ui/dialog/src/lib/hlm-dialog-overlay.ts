@@ -12,10 +12,10 @@ export const hlmDialogOverlayClass =
 	hostDirectives: [BrnDialogOverlay],
 })
 export class HlmDialogOverlay {
-	private readonly _classSettable = injectCustomClassSettable({ optional: true, host: true });
-
 	public readonly userClass = input<ClassValue>('', { alias: 'class' });
+
 	protected readonly _computedClass = computed(() => hlm(hlmDialogOverlayClass, this.userClass()));
+	private readonly _classSettable = injectCustomClassSettable({ host: true, optional: true });
 
 	constructor() {
 		effect(() => {

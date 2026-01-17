@@ -1,4 +1,5 @@
 import type { BooleanInput } from '@angular/cdk/coercion';
+
 import { NgComponentOutlet } from '@angular/common';
 import { booleanAttribute, ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { provideIcons } from '@ng-icons/core';
@@ -6,17 +7,12 @@ import { lucideX } from '@ng-icons/lucide';
 import { BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { classes } from '@spartan-ng/helm/utils';
+
 import { HlmDialogClose } from './hlm-dialog-close';
 
 @Component({
 	selector: 'hlm-dialog-content',
 	imports: [NgComponentOutlet, HlmDialogClose, HlmIconImports],
-	providers: [provideIcons({ lucideX })],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		'data-slot': 'dialog-content',
-		'[attr.data-state]': 'state()',
-	},
 	template: `
 		@if (component) {
 			<ng-container [ngComponentOutlet]="component" />
@@ -31,16 +27,22 @@ import { HlmDialogClose } from './hlm-dialog-close';
 			</button>
 		}
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: {
+		'[attr.data-state]': 'state()',
+		'data-slot': 'dialog-content',
+	},
+	providers: [provideIcons({ lucideX })],
 })
 export class HlmDialogContent {
-	private readonly _dialogRef = inject(BrnDialogRef);
 	private readonly _dialogContext = injectBrnDialogContext({ optional: true });
+	public readonly component = this._dialogContext?.$component;
 
 	public readonly showCloseButton = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
 
-	public readonly state = computed(() => this._dialogRef?.state() ?? 'closed');
+	private readonly _dialogRef = inject(BrnDialogRef);
 
-	public readonly component = this._dialogContext?.$component;
+	public readonly state = computed(() => this._dialogRef?.state() ?? 'closed');
 	private readonly _dynamicComponentClass = this._dialogContext?.$dynamicComponentClass;
 
 	constructor() {
