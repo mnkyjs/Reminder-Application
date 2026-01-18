@@ -13,6 +13,15 @@ describe('TaskItem', () => {
 
         fixture = TestBed.createComponent(TaskItem);
         component = fixture.componentInstance;
+        fixture.componentRef.setInput('task', {
+            createdAt: new Date(),
+            description: '',
+            dueDate: new Date(),
+            id: '1',
+            isCompleted: false,
+            isImportant: false,
+            title: 'Test Task',
+        });
         await fixture.whenStable();
     });
 
