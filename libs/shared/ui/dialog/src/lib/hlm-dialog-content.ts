@@ -39,13 +39,14 @@ import { HlmDialogClose } from './hlm-dialog-close';
 })
 export class HlmDialogContent {
     private readonly _dialogContext = injectBrnDialogContext({ optional: true });
-    public readonly component = this._dialogContext?.$component;
+    private readonly _dialogRef = inject(BrnDialogRef);
 
     public readonly showCloseButton = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
 
-    private readonly _dialogRef = inject(BrnDialogRef);
-
     public readonly state = computed(() => this._dialogRef?.state() ?? 'closed');
+
+    public readonly component = this._dialogContext?.$component;
+
     private readonly _dynamicComponentClass = this._dialogContext?.$dynamicComponentClass;
 
     constructor() {

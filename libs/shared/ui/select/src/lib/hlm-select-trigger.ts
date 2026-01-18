@@ -50,15 +50,13 @@ export const selectTriggerVariants = cva(
     providers: [provideIcons({ lucideChevronDown })],
 })
 export class HlmSelectTrigger {
-    public readonly size = input<'default' | 'sm'>('default');
-
-    public readonly userClass = input<ClassValue>('', { alias: 'class' });
-
     protected readonly _brnSelect = inject(BrnSelect, { optional: true });
+
+    public readonly size = input<'default' | 'sm'>('default');
+    public readonly userClass = input<ClassValue>('', { alias: 'class' });
 
     protected readonly _computedClass = computed(() =>
         hlm(selectTriggerVariants({ error: this._brnSelect?.errorState() }), this.userClass()),
     );
-
     protected readonly _icon = contentChild(HlmIcon);
 }
