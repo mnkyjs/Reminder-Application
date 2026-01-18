@@ -27,13 +27,7 @@ import { HlmIconImports } from '@spartan-ng/helm/icon';
     ],
 })
 export class TaskItem {
-    readonly delete = output<string>();
-
-    readonly edit = output<Task>();
     readonly task = input.required<Task>();
-    readonly toggleComplete = output<string>();
-    readonly toggleImportant = output<string>();
-
     protected readonly formattedDate = computed(() => {
         const date = this.task().dueDate;
         if (!date) return '';
@@ -48,4 +42,9 @@ export class TaskItem {
         const task = this.task();
         return task.dueDate && !task.isCompleted && task.dueDate < new Date();
     });
+
+    readonly delete = output<string>();
+    readonly edit = output<Task>();
+    readonly toggleComplete = output<string>();
+    readonly toggleImportant = output<string>();
 }
