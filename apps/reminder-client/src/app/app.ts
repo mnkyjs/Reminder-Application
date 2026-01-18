@@ -1,14 +1,19 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
-import { NxWelcome } from './nx-welcome';
 
 @Component({
     selector: 'app-root',
-    imports: [NxWelcome, RouterModule],
-    styleUrl: './app.css',
-    templateUrl: './app.html',
+    imports: [RouterModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
+        <main class="min-h-screen bg-background">
+            <router-outlet />
+        </main>
+    `,
+    styles: `
+        :host {
+            display: block;
+        }
+    `,
 })
-export class App {
-    protected title = 'reminder-client';
-}
+export class App {}
