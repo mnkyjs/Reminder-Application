@@ -1,102 +1,98 @@
-# Reminder Application
+# Reminder Application 📝
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A modern, task management application built with **Angular v21** and **Nx**, featuring a sleek UI powered by **Tailwind CSS v4** and **Spartan**.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## ✨ Key Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **Task Management**: Create, edit, delete, and organize tasks effortlessly.
+- **Smart UX**: Intuitive interfaces with responsive design and accessibility first.
+- **Modern Stack**: leveraging the latest features of Angular (Signals, Standalone) and Tailwind CSS (v4).
+- **Modular Architecture**: Scalable Nx workspace following DDD-inspired library partitioning.
+- **Accessible UI**: Built with [Spartan](https://www.spartan.ng/), providing accessible, unstyled components based on shadcn/ui.
 
-## Run tasks
+## 🛠️ Tech Stack
 
-To run the dev server for your app, use:
+- **Framework**: [Angular v21](https://angular.dev/)
+- **Build System**: [Nx](https://nx.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Components**: [Spartan (shadcn/ui)](https://www.spartan.ng/) & [Lucide Icons](https://lucide.dev/)
+- **State Management**: Angular Signals
+- **Testing**: [Jest](https://jestjs.io/) & [Testing Library](https://testing-library.com/)
 
-```sh
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v20+ recommended)
+- npm or pnpm
+
+### Installation
+
+Clone the repository and install dependencies:
+
+```bash
+npm install
+```
+
+### Development Server
+
+Start the development server:
+
+```bash
 npx nx serve reminder-client
 ```
 
-To create a production bundle:
+Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-```sh
+### Build
+
+Build the project for production:
+
+```bash
 npx nx build reminder-client
 ```
 
-To see all available targets to run for a project, run:
+The build artifacts will be stored in the `dist/` directory.
 
-```sh
-npx nx show project reminder-client
+### Running Tests
+
+Execute the unit tests via [Jest](https://jestjs.io):
+
+```bash
+npx nx test reminder-client
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+To run tests for all libraries:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
+```bash
+npx nx run-many -t test
 ```
 
-To generate a new library, use:
+## 📂 Project Structure
 
-```sh
-npx nx g @nx/angular:lib mylib
-```
+This workspace follows a modular architecture using Nx libraries:
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+- **`apps/reminder-client`**: The main application entry point.
+- **`libs/task`**: Domain-specific logic and features for Tasks.
+  - **`feature-list`**: Task listing and management logic.
+  - **`data-access`**: State management (Stores/Services) and data fetching.
+  - **`ui`**: Domain-specific presentational components.
+- **`libs/shared`**: Reusable utilities and primitives.
+  - **`ui/*`**: Granular, reusable UI components (Buttons, Inputs, Dialogs, etc.).
+  - **`models`**: Shared interfaces and types.
+- **`libs/util`**: General purpose utilities.
+  - **`persistence`**: Local storage and persistence logic.
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🤝 Contributing
 
-## Set up CI!
+We welcome contributions! Please follow these steps:
 
-### Step 1
+1.  Fork the repository.
+2.  Create a feature branch (`git checkout -b feature/amazing-feature`).
+3.  Commit your changes (`git commit -m 'feat: add amazing feature'`).
+4.  Push to the branch (`git push origin feature/amazing-feature`).
+5.  Open a Pull Request.
 
-To connect to Nx Cloud, run the following command:
+## 📄 License
 
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+This project is licensed under the MIT License - see the `package.json` file for details.
