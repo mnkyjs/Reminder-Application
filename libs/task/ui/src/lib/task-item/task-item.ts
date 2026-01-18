@@ -27,10 +27,10 @@ import { HlmIconImports } from '@spartan-ng/helm/icon';
     ],
 })
 export class TaskItem {
-    readonly delete = output<string>();
-
-    readonly edit = output<Task>();
     readonly task = input.required<Task>();
+
+    readonly delete = output<string>();
+    readonly edit = output<Task>();
     readonly toggleComplete = output<string>();
     readonly toggleImportant = output<string>();
 

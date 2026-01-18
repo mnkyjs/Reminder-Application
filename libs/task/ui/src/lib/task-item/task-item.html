@@ -34,8 +34,13 @@
                 {{ task().title }}
             </h3>
             @if (task().isImportant && !task().isCompleted) {
-            <span class="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
-                <ng-icon hlm name="lucideStar" size="xs" class="fill-current" />
+            <span
+                class="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                <ng-icon
+                    hlm
+                    name="lucideStar"
+                    size="xs"
+                    class="fill-current" />
                 Important
             </span>
             }
@@ -56,7 +61,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+    <div class="flex items-center gap-1 opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
         <button
             hlmBtn
             variant="ghost"

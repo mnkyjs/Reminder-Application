@@ -7,18 +7,19 @@
 
     <!-- Stats -->
     <div class="text-muted-foreground mb-6 flex gap-4 text-sm">
-        <span>{{ store.stats().total }} total</span>
-        <span>{{ store.stats().open }} open</span>
-        <span>{{ store.stats().completed }} completed</span>
-        @if (store.stats().overdue > 0) {
-        <span class="text-destructive">{{ store.stats().overdue }} overdue</span>
+        <span>{{ stats().total }} total</span>
+        <span>{{ stats().open }} open</span>
+        <span>{{ stats().completed }} completed</span>
+        @if (stats().overdue > 0) {
+        <span class="text-destructive">{{ stats().overdue }} overdue</span>
         }
     </div>
 
     <!-- Controls -->
-    <div class="mb-6 flex flex-wrap items-center gap-4">
+    <!-- Controls -->
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
         <!-- Search -->
-        <div class="relative flex-1">
+        <div class="relative w-full sm:w-auto sm:flex-1">
             <ng-icon
                 hlm
                 name="lucideSearch"
@@ -29,63 +30,67 @@
                 type="text"
                 placeholder="Search tasks..."
                 class="w-full pl-10"
-                [value]="store.filter().searchTerm"
+                [value]="filter().searchTerm"
                 (input)="onSearchChange($event)" />
         </div>
 
-        <!-- Sort -->
-        <brn-select
-            [ngModel]="store.filter().sortBy"
-            (ngModelChange)="onSortChange($event)">
-            <hlm-select-trigger class="w-40">
-                <hlm-select-value placeholder="Sort by" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-                @for (option of sortOptions; track option.value) {
-                <hlm-option [value]="option.value"> {{ option.label }} </hlm-option>
+        <!-- Secondary Controls -->
+        <div class="flex w-full items-center gap-2 sm:w-auto">
+            <!-- Sort -->
+            <brn-select
+                class="flex-1 sm:w-40 sm:flex-none"
+                [ngModel]="filter().sortBy"
+                (ngModelChange)="onSortChange($event)">
+                <hlm-select-trigger class="w-full sm:w-40">
+                    <hlm-select-value placeholder="Sort by" />
+                </hlm-select-trigger>
+                <hlm-select-content>
+                    @for (option of sortOptions; track option.value) {
+                    <hlm-option [value]="option.value"> {{ option.label }} </hlm-option>
+                    }
+                </hlm-select-content>
+            </brn-select>
+
+            <!-- Sort Direction -->
+            <button
+                hlmBtn
+                variant="outline"
+                size="icon"
+                [attr.aria-label]="filter().sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'"
+                (click)="toggleSortDirection()">
+                @if (filter().sortDirection === 'asc') {
+                <ng-icon
+                    hlm
+                    name="lucideArrowDownAZ"
+                    size="sm" />
+                } @else {
+                <ng-icon
+                    hlm
+                    name="lucideArrowUpAZ"
+                    size="sm" />
                 }
-            </hlm-select-content>
-        </brn-select>
+            </button>
 
-        <!-- Sort Direction -->
-        <button
-            hlmBtn
-            variant="outline"
-            size="icon"
-            [attr.aria-label]="store.filter().sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'"
-            (click)="store.toggleSortDirection()">
-            @if (store.filter().sortDirection === 'asc') {
-            <ng-icon
-                hlm
-                name="lucideArrowDownAZ"
-                size="sm" />
-            } @else {
-            <ng-icon
-                hlm
-                name="lucideArrowUpAZ"
-                size="sm" />
-            }
-        </button>
-
-        <!-- Add Task Button -->
-        <button
-            hlmBtn
-            (click)="openCreateForm()">
-            <ng-icon
-                hlm
-                name="lucidePlus"
-                size="sm" />
-            Add Task
-        </button>
+            <!-- Add Task Button -->
+            <button
+                hlmBtn
+                (click)="openCreateForm()">
+                <ng-icon
+                    hlm
+                    name="lucidePlus"
+                    size="sm" />
+                Add Task
+            </button>
+        </div>
     </div>
 
     <!-- Task List -->
     <div class="space-y-3">
-        @for (task of store.filteredTasks(); track task.id) {
+        @for (task of tasks(); track task.id) {
         <ra-task-item
             [task]="task"
-            (toggleComplete)="store.toggleComplete($event)"
-            (toggleImportant)="store.toggleImportant($event)"
+            (toggleComplete)="toggleComplete($event)"
+            (toggleImportant)="toggleImportant($event)"
             (edit)="openEditForm($event)"
             (delete)="deleteTask($event)" />
         } @empty {
@@ -110,6 +115,27 @@
     @if (showForm()) {
     <ra-task-form
         [task]="editingTask()"
+        (save)="onSaveTask($event)"
         (cancelEdit)="closeForm()" />
     }
+    <hlm-alert-dialog [state]="deleteDialogOpen() ? 'open' : 'closed'">
+        <hlm-alert-dialog-content *brnAlertDialogContent="let ctx">
+            <hlm-alert-dialog-header>
+                <h3 hlmAlertDialogTitle>Delete Task?</h3>
+                <p hlmAlertDialogDescription>Are you sure you want to delete this task? This action cannot be undone.</p>
+            </hlm-alert-dialog-header>
+            <hlm-alert-dialog-footer>
+                <button
+                    hlmAlertDialogCancel
+                    (click)="deleteDialogOpen.set(false)">
+                    Cancel
+                </button>
+                <button
+                    hlmAlertDialogAction
+                    (click)="confirmDelete()">
+                    Delete
+                </button>
+            </hlm-alert-dialog-footer>
+        </hlm-alert-dialog-content>
+    </hlm-alert-dialog>
 </div>

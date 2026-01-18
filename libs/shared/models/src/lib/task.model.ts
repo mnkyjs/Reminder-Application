@@ -19,7 +19,6 @@ export interface TaskFilter {
 
 export type TaskState = 'closed' | 'open';
 
-// Factory function for creating new tasks
 export function createTask(partial: Partial<Task>): Task {
     const now = new Date();
     return {

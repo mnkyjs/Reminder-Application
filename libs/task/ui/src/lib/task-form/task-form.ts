@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
-import { TaskStore } from '@reminder/data-access';
 import { Task } from '@reminder/models';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { format } from 'date-fns';
 
 @Component({
     selector: 'ra-task-form',
@@ -19,8 +19,17 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
     providers: [provideIcons({ lucideX })],
 })
 export class TaskForm implements OnInit {
-    readonly cancelEdit = output<void>();
     readonly task = input<null | Task>(null);
+    protected readonly isEditMode = computed(() => this.task() !== null);
+    protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
+
+    readonly save = output<{
+        description?: string;
+        dueDate: Date | null;
+        isImportant: boolean;
+        title: string;
+    }>();
+    readonly cancelEdit = output<void>();
 
     protected readonly form = new FormGroup({
         description: new FormControl('', { nonNullable: true }),
@@ -28,11 +37,6 @@ export class TaskForm implements OnInit {
         isImportant: new FormControl(false, { nonNullable: true }),
         title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(1)] }),
     });
-
-    protected readonly isEditMode = computed(() => this.task() !== null);
-    protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
-
-    private readonly store = inject(TaskStore);
 
     ngOnInit(): void {
         const task = this.task();
@@ -61,17 +65,11 @@ export class TaskForm implements OnInit {
             title: title.trim(),
         };
 
-        const existingTask = this.task();
-        if (existingTask) {
-            this.store.updateTask(existingTask.id, taskData);
-        } else {
-            this.store.addTask(taskData);
-        }
-
+        this.save.emit(taskData);
         this.cancelEdit.emit();
     }
 
     private formatDateForInput(date: Date): string {
-        return date.toISOString().split('T')[0];
+        return format(date, 'yyyy-MM-dd');
     }
 }

@@ -18,7 +18,7 @@
             "@reminder/models": ["libs/shared/models/src/index.ts"],
             "@reminder/data-access": ["libs/task/data-access/src/index.ts"],
             "@reminder/feature-list": ["libs/task/feature-list/src/index.ts"],
-            "@reminder/feature-edit": ["libs/task/feature-edit/src/index.ts"],
+
             "@reminder/ui": ["libs/task/ui/src/index.ts"],
             "@reminder/persistence": ["libs/util/persistence/src/index.ts"],
             "@spartan-ng/helm/input": ["libs/shared/ui/input/src/index.ts"],

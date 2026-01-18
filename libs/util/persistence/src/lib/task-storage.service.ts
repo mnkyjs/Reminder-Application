@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class TaskStorage {
-    private readonly STORAGE_KEY = 'reminder-app-data';
-
     load<T>(key: string, defaultValue: T): T {
         try {
             const stored = localStorage.getItem(key);
@@ -45,7 +43,6 @@ export class TaskStorage {
                 return new Date(obj.value);
             }
         }
-        // Handle plain ISO date strings (legacy format)
         if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
             const date = new Date(value);
             if (!isNaN(date.getTime())) {
