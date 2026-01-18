@@ -1,0 +1,119 @@
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    tabindex="0"
+    role="button"
+    aria-label="Close modal"
+    (keyup.escape)="onCancel()"
+    (click)="onCancel()">
+    <div
+        hlmCard
+        class="w-full max-w-md"
+        tabindex="-1"
+        (keydown.enter)="$event.stopPropagation()"
+        (click)="$event.stopPropagation()">
+        <div
+            hlmCardHeader
+            class="flex flex-row items-center justify-between">
+            <h2 hlmCardTitle>{{ title() }}</h2>
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Close"
+                (click)="onCancel()">
+                <ng-icon
+                    hlm
+                    name="lucideX"
+                    size="sm" />
+            </button>
+        </div>
+
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()">
+            <div
+                hlmCardContent
+                class="space-y-4">
+                <!-- Title -->
+                <div class="space-y-2">
+                    <label
+                        hlmLabel
+                        for="title"
+                        >Title *</label
+                    >
+                    <input
+                        hlmInput
+                        id="title"
+                        type="text"
+                        formControlName="title"
+                        placeholder="Enter task title"
+                        class="w-full" />
+                </div>
+
+                <!-- Description -->
+                <div class="space-y-2">
+                    <label
+                        hlmLabel
+                        for="description"
+                        >Description</label
+                    >
+                    <textarea
+                        hlmInput
+                        id="description"
+                        formControlName="description"
+                        placeholder="Enter task description (optional)"
+                        rows="3"
+                        class="w-full resize-none"></textarea>
+                </div>
+
+                <!-- Due Date -->
+                <div class="space-y-2">
+                    <label
+                        hlmLabel
+                        for="dueDate"
+                        >Due Date</label
+                    >
+                    <input
+                        hlmInput
+                        id="dueDate"
+                        type="date"
+                        formControlName="dueDate"
+                        class="w-full" />
+                </div>
+
+                <!-- Important -->
+                <div class="flex items-center gap-2">
+                    <input
+                        id="isImportant"
+                        type="checkbox"
+                        formControlName="isImportant"
+                        class="border-input size-4 rounded" />
+                    <label
+                        hlmLabel
+                        for="isImportant"
+                        class="cursor-pointer"
+                        >Mark as important</label
+                    >
+                </div>
+            </div>
+
+            <div
+                hlmCardFooter
+                class="flex justify-end gap-2">
+                <button
+                    hlmBtn
+                    variant="outline"
+                    type="button"
+                    (click)="onCancel()">
+                    Cancel
+                </button>
+                <button
+                    hlmBtn
+                    type="submit"
+                    [disabled]="form.invalid">
+                    {{ isEditMode() ? 'Save Changes' : 'Create Task' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

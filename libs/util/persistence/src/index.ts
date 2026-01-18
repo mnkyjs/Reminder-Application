@@ -1,1 +1,1 @@
-export * from './lib/persistence/persistence';
+export * from './lib/task-storage.service';

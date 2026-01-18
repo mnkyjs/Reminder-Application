@@ -1,0 +1,97 @@
+<div
+    class="group bg-card hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-4 transition-colors"
+    [ngClass]="{
+        'border-l-4 border-l-yellow-400 border-yellow-400/30 bg-yellow-50/5': task().isImportant && !task().isCompleted,
+        'bg-muted/30': task().isCompleted
+    }">
+    <!-- Checkbox -->
+    <button
+        type="button"
+        class="hover:bg-accent flex size-8 flex-shrink-0 items-center justify-center rounded-md"
+        [attr.aria-label]="task().isCompleted ? 'Mark as incomplete' : 'Mark as complete'"
+        (click)="toggleComplete.emit(task().id)">
+        <div
+            class="flex size-5 items-center justify-center rounded-full border-2 transition-colors"
+            [class.bg-primary]="task().isCompleted"
+            [class.border-primary]="task().isCompleted">
+            @if (task().isCompleted) {
+            <ng-icon
+                hlm
+                name="lucideCheck"
+                class="text-primary-foreground"
+                size="xs" />
+            }
+        </div>
+    </button>
+
+    <!-- Content -->
+    <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2">
+            <h3
+                class="truncate font-medium"
+                [class.line-through]="task().isCompleted"
+                [class.text-muted-foreground]="task().isCompleted">
+                {{ task().title }}
+            </h3>
+            @if (task().isImportant && !task().isCompleted) {
+            <span class="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                <ng-icon hlm name="lucideStar" size="xs" class="fill-current" />
+                Important
+            </span>
+            }
+        </div>
+        @if (task().description) {
+        <p class="text-muted-foreground truncate text-sm">{{ task().description }}</p>
+        } @if (task().dueDate) {
+        <div
+            class="mt-1 flex items-center gap-1 text-xs"
+            [class.text-destructive]="isOverdue()">
+            <ng-icon
+                hlm
+                name="lucideCalendar"
+                size="xs" />
+            <span>{{ formattedDate() }}</span>
+        </div>
+        }
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+        <button
+            hlmBtn
+            variant="ghost"
+            size="icon-sm"
+            [attr.aria-label]="task().isImportant ? 'Remove importance' : 'Mark as important'"
+            (click)="toggleImportant.emit(task().id)">
+            <ng-icon
+                hlm
+                name="lucideStar"
+                size="sm"
+                [class.fill-yellow-400]="task().isImportant"
+                [class.text-yellow-400]="task().isImportant" />
+        </button>
+        <button
+            hlmBtn
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Edit task"
+            (click)="edit.emit(task())">
+            <ng-icon
+                hlm
+                name="lucidePencil"
+                size="sm" />
+        </button>
+        <button
+            hlmBtn
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Delete task"
+            class="hover:text-destructive"
+            (click)="delete.emit(task().id)">
+            <ng-icon
+                hlm
+                name="lucideTrash2"
+                size="sm" />
+        </button>
+    </div>
+</div>
