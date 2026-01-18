@@ -2,7 +2,7 @@
     "name": "ui",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/task/ui/src",
-    "prefix": "lib",
+    "prefix": "ra",
     "projectType": "library",
     "tags": [],
     "targets": {

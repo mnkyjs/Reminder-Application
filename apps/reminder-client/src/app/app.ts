@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
+    selector: 'ra-root',
     imports: [RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `

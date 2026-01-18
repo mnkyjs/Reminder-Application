@@ -2,7 +2,7 @@
     "name": "feature-list",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/task/feature-list/src",
-    "prefix": "lib",
+    "prefix": "ra",
     "projectType": "library",
     "tags": [],
     "targets": {

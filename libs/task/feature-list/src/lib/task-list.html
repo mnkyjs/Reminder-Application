@@ -1,0 +1,86 @@
+<div class="container mx-auto max-w-4xl p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-foreground">Tasks</h1>
+        <p class="text-muted-foreground">Manage your tasks and reminders</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="mb-6 flex gap-4 text-sm text-muted-foreground">
+        <span>{{ store.stats().total }} total</span>
+        <span>{{ store.stats().open }} open</span>
+        <span>{{ store.stats().completed }} completed</span>
+        @if (store.stats().overdue > 0) {
+            <span class="text-destructive">{{ store.stats().overdue }} overdue</span>
+        }
+    </div>
+
+    <!-- Controls -->
+    <div class="mb-6 flex flex-wrap items-center gap-4">
+        <!-- Search -->
+        <div class="relative flex-1">
+            <ng-icon hlm name="lucideSearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size="sm" />
+            <input
+                hlmInput
+                type="text"
+                placeholder="Search tasks..."
+                class="w-full pl-10"
+                [value]="store.filter().searchTerm"
+                (input)="onSearchChange($event)" />
+        </div>
+
+        <!-- Sort -->
+        <brn-select [ngModel]="store.filter().sortBy" (ngModelChange)="onSortChange($event)">
+            <hlm-select-trigger class="w-40">
+                <hlm-select-value placeholder="Sort by" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+                @for (option of sortOptions; track option.value) {
+                    <hlm-option [value]="option.value">
+                        {{ option.label }}
+                    </hlm-option>
+                }
+            </hlm-select-content>
+        </brn-select>
+
+        <!-- Sort Direction -->
+        <button hlmBtn variant="outline" size="icon" (click)="store.toggleSortDirection()" [attr.aria-label]="store.filter().sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'">
+            @if (store.filter().sortDirection === 'asc') {
+                <ng-icon hlm name="lucideArrowDownAZ" size="sm" />
+            } @else {
+                <ng-icon hlm name="lucideArrowUpAZ" size="sm" />
+            }
+        </button>
+
+        <!-- Add Task Button -->
+        <button hlmBtn (click)="openCreateForm()">
+            <ng-icon hlm name="lucidePlus" size="sm" />
+            Add Task
+        </button>
+    </div>
+
+    <!-- Task List -->
+    <div class="space-y-3">
+        @for (task of store.filteredTasks(); track task.id) {
+            <ra-task-item
+                [task]="task"
+                (toggleComplete)="store.toggleComplete($event)"
+                (toggleImportant)="store.toggleImportant($event)"
+                (edit)="openEditForm($event)"
+                (delete)="deleteTask($event)" />
+        } @empty {
+            <div class="rounded-lg border border-dashed p-12 text-center">
+                <p class="text-muted-foreground">No tasks found</p>
+                <button hlmBtn variant="outline" class="mt-4" (click)="openCreateForm()">
+                    <ng-icon hlm name="lucidePlus" size="sm" />
+                    Create your first task
+                </button>
+            </div>
+        }
+    </div>
+
+    <!-- Task Form Modal -->
+    @if (showForm()) {
+        <ra-task-form [task]="editingTask()" (close)="closeForm()" />
+    }
+</div>

@@ -2,7 +2,7 @@
     "name": "feature-edit",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/task/feature-edit/src",
-    "prefix": "lib",
+    "prefix": "ra",
     "projectType": "library",
     "tags": [],
     "targets": {
