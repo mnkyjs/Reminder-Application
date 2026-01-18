@@ -6,7 +6,9 @@ import { TaskStore } from '@reminder/data-access';
 import { TaskForm } from '@reminder/feature-edit';
 import { SortOption, Task } from '@reminder/models';
 import { TaskItem } from '@reminder/ui';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { BrnAlertDialogContent } from '@spartan-ng/brain/alert-dialog';
+import { BrnSelect, BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
@@ -15,6 +17,8 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 @Component({
     selector: 'ra-task-list',
     imports: [
+        BrnAlertDialogContent,
+        BrnSelect,
         FormsModule,
         TaskItem,
         TaskForm,
@@ -22,6 +26,7 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
         ...HlmIconImports,
         ...HlmInputImports,
         ...HlmSelectImports,
+        ...HlmAlertDialogImports,
         ...BrnSelectImports,
     ],
     styleUrl: './task-list.css',
@@ -37,14 +42,17 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
     ],
 })
 export class TaskList {
+    protected readonly deleteDialogOpen = signal(false);
+    protected readonly deleteId = signal<null | string>(null);
     protected readonly editingTask = signal<null | Task>(null);
+
     protected readonly showForm = signal(false);
+
     protected readonly sortOptions: { label: string; value: SortOption }[] = [
         { label: 'Due Date', value: 'dueDate' },
         { label: 'Alphabetical', value: 'alphabetical' },
         { label: 'State', value: 'state' },
     ];
-
     protected readonly store = inject(TaskStore);
 
     protected closeForm(): void {
@@ -52,9 +60,18 @@ export class TaskList {
         this.editingTask.set(null);
     }
 
+    protected confirmDelete(): void {
+        const id = this.deleteId();
+        if (id) {
+            this.store.deleteTask(id);
+        }
+        this.deleteDialogOpen.set(false);
+        this.deleteId.set(null);
+    }
+
     protected deleteTask(id: string): void {
-        // TODO: Add confirmation dialog
-        this.store.deleteTask(id);
+        this.deleteId.set(id);
+        this.deleteDialogOpen.set(true);
     }
 
     protected onSearchChange(event: Event): void {
