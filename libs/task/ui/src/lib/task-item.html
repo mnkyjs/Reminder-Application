@@ -4,9 +4,8 @@
     [class.bg-muted/30]="task().isCompleted">
     <!-- Checkbox -->
     <button
-        hlmBtn
-        variant="ghost"
-        size="icon-sm"
+        type="button"
+        class="flex size-8 flex-shrink-0 items-center justify-center rounded-md hover:bg-accent"
         (click)="toggleComplete.emit(task().id)"
         [attr.aria-label]="task().isCompleted ? 'Mark as incomplete' : 'Mark as complete'">
         <div
@@ -15,7 +14,7 @@
             [class.bg-primary]="task().isCompleted"
             [class.border-primary]="task().isCompleted">
             @if (task().isCompleted) {
-                <ng-icon hlm name="lucideCheck" class="text-primary-foreground" size="sm" />
+                <ng-icon hlm name="lucideCheck" class="text-primary-foreground" size="xs" />
             }
         </div>
     </button>
