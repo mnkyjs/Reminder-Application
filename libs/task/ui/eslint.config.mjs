@@ -13,7 +13,7 @@ export default [
                 'error',
                 {
                     style: 'kebab-case',
-                    prefix: 'lib',
+                    prefix: 'ra',
                     type: 'element',
                 },
             ],
@@ -21,7 +21,7 @@ export default [
                 'error',
                 {
                     style: 'camelCase',
-                    prefix: 'lib',
+                    prefix: 'ra',
                     type: 'attribute',
                 },
             ],

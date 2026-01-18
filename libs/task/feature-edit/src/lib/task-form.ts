@@ -19,7 +19,7 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
     providers: [provideIcons({ lucideX })],
 })
 export class TaskForm implements OnInit {
-    readonly close = output<void>();
+    readonly cancelEdit = output<void>();
     readonly task = input<null | Task>(null);
 
     private readonly fb = inject(FormBuilder);
@@ -48,7 +48,7 @@ export class TaskForm implements OnInit {
     }
 
     protected onCancel(): void {
-        this.close.emit();
+        this.cancelEdit.emit();
     }
 
     protected onSubmit(): void {
@@ -69,7 +69,7 @@ export class TaskForm implements OnInit {
             this.store.addTask(taskData);
         }
 
-        this.close.emit();
+        this.cancelEdit.emit();
     }
 
     private formatDateForInput(date: Date): string {
