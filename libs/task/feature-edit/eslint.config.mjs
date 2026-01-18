@@ -25,6 +25,7 @@ export default [
                     type: 'attribute',
                 },
             ],
+            'perfectionist/sort-classes': 'off',
         },
     },
     {

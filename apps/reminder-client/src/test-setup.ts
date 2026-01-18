@@ -5,7 +5,6 @@ setupZonelessTestEnv({
     errorOnUnknownProperties: true,
 });
 
-
 global.ResizeObserver = class {
     disconnect() {
         return;
@@ -17,4 +16,3 @@ global.ResizeObserver = class {
         return;
     }
 };
-
