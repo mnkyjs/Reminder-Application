@@ -4,14 +4,17 @@ import { TaskStorage } from '@reminder/persistence';
 
 @Injectable({ providedIn: 'root' })
 export class TaskStore {
+    private readonly storage = inject(TaskStorage);
+
     private readonly _filter = signal<TaskFilter>({
         searchTerm: '',
         sortBy: 'dueDate',
         sortDirection: 'asc',
     });
-    readonly filter = this._filter.asReadonly();
-
+    private readonly _selectedTaskId = signal<null | string>(null);
     private readonly _tasks = signal<Task[]>([]);
+
+    readonly filter = this._filter.asReadonly();
     readonly filteredTasks = computed(() => {
         const tasks = this._tasks();
         const { searchTerm, sortBy, sortDirection } = this._filter();
@@ -45,13 +48,10 @@ export class TaskStore {
 
         return result;
     });
-    private readonly _selectedTaskId = signal<null | string>(null);
-
     readonly selectedTask = computed(() => {
         const id = this._selectedTaskId();
         return id ? (this._tasks().find((task) => task.id === id) ?? null) : null;
     });
-
     readonly stats = computed(() => {
         const tasks = this._tasks();
         return {
@@ -62,12 +62,9 @@ export class TaskStore {
             total: tasks.length,
         };
     });
-
     readonly tasks = this._tasks.asReadonly();
 
     private readonly FILTER_STORAGE_KEY = 'task-filter';
-
-    private readonly storage = inject(TaskStorage);
     private readonly STORAGE_KEY = 'tasks';
 
     constructor() {
