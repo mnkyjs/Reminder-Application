@@ -7,11 +7,11 @@
 
     <!-- Stats -->
     <div class="text-muted-foreground mb-6 flex gap-4 text-sm">
-        <span>{{ store.stats().total }} total</span>
-        <span>{{ store.stats().open }} open</span>
-        <span>{{ store.stats().completed }} completed</span>
-        @if (store.stats().overdue > 0) {
-        <span class="text-destructive">{{ store.stats().overdue }} overdue</span>
+        <span>{{ stats().total }} total</span>
+        <span>{{ stats().open }} open</span>
+        <span>{{ stats().completed }} completed</span>
+        @if (stats().overdue > 0) {
+        <span class="text-destructive">{{ stats().overdue }} overdue</span>
         }
     </div>
 
@@ -30,7 +30,7 @@
                 type="text"
                 placeholder="Search tasks..."
                 class="w-full pl-10"
-                [value]="store.filter().searchTerm"
+                [value]="filter().searchTerm"
                 (input)="onSearchChange($event)" />
         </div>
 
@@ -39,7 +39,7 @@
             <!-- Sort -->
             <brn-select
                 class="flex-1 sm:w-40 sm:flex-none"
-                [ngModel]="store.filter().sortBy"
+                [ngModel]="filter().sortBy"
                 (ngModelChange)="onSortChange($event)">
                 <hlm-select-trigger class="w-full sm:w-40">
                     <hlm-select-value placeholder="Sort by" />
@@ -56,9 +56,9 @@
                 hlmBtn
                 variant="outline"
                 size="icon"
-                [attr.aria-label]="store.filter().sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'"
-                (click)="store.toggleSortDirection()">
-                @if (store.filter().sortDirection === 'asc') {
+                [attr.aria-label]="filter().sortDirection === 'asc' ? 'Sort descending' : 'Sort ascending'"
+                (click)="toggleSortDirection()">
+                @if (filter().sortDirection === 'asc') {
                 <ng-icon
                     hlm
                     name="lucideArrowDownAZ"
@@ -86,11 +86,11 @@
 
     <!-- Task List -->
     <div class="space-y-3">
-        @for (task of store.filteredTasks(); track task.id) {
+        @for (task of tasks(); track task.id) {
         <ra-task-item
             [task]="task"
-            (toggleComplete)="store.toggleComplete($event)"
-            (toggleImportant)="store.toggleImportant($event)"
+            (toggleComplete)="toggleComplete($event)"
+            (toggleImportant)="toggleImportant($event)"
             (edit)="openEditForm($event)"
             (delete)="deleteTask($event)" />
         } @empty {
