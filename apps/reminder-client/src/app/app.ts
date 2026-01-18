@@ -4,16 +4,16 @@ import { RouterModule } from '@angular/router';
 @Component({
     selector: 'ra-root',
     imports: [RouterModule],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
-        <main class="min-h-screen bg-background">
-            <router-outlet />
-        </main>
-    `,
     styles: `
         :host {
             display: block;
         }
     `,
+    template: `
+        <main class="bg-background min-h-screen">
+            <router-outlet />
+        </main>
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {}

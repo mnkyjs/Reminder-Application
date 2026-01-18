@@ -1,20 +1,22 @@
 <div
-    class="group flex items-center gap-3 rounded-lg border bg-card p-4 transition-colors hover:bg-accent/50"
-    [class.border-primary/50]="task().isImportant"
-    [class.bg-muted/30]="task().isCompleted">
+    class="group bg-card hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-4 transition-colors"
+    [ngClass]="{ 'border-primary/50': task().isImportant, 'bg-muted/30': task().isCompleted }">
     <!-- Checkbox -->
     <button
         type="button"
-        class="flex size-8 flex-shrink-0 items-center justify-center rounded-md hover:bg-accent"
-        (click)="toggleComplete.emit(task().id)"
-        [attr.aria-label]="task().isCompleted ? 'Mark as incomplete' : 'Mark as complete'">
+        class="hover:bg-accent flex size-8 flex-shrink-0 items-center justify-center rounded-md"
+        [attr.aria-label]="task().isCompleted ? 'Mark as incomplete' : 'Mark as complete'"
+        (click)="toggleComplete.emit(task().id)">
         <div
             class="flex size-5 items-center justify-center rounded-full border-2 transition-colors"
-            [class.border-primary]="!task().isCompleted"
             [class.bg-primary]="task().isCompleted"
             [class.border-primary]="task().isCompleted">
             @if (task().isCompleted) {
-                <ng-icon hlm name="lucideCheck" class="text-primary-foreground" size="xs" />
+            <ng-icon
+                hlm
+                name="lucideCheck"
+                class="text-primary-foreground"
+                size="xs" />
             }
         </div>
     </button>
@@ -28,15 +30,17 @@
             {{ task().title }}
         </h3>
         @if (task().description) {
-            <p class="truncate text-sm text-muted-foreground">
-                {{ task().description }}
-            </p>
-        }
-        @if (task().dueDate) {
-            <div class="mt-1 flex items-center gap-1 text-xs" [class.text-destructive]="isOverdue()">
-                <ng-icon hlm name="lucideCalendar" size="xs" />
-                <span>{{ formattedDate() }}</span>
-            </div>
+        <p class="text-muted-foreground truncate text-sm">{{ task().description }}</p>
+        } @if (task().dueDate) {
+        <div
+            class="mt-1 flex items-center gap-1 text-xs"
+            [class.text-destructive]="isOverdue()">
+            <ng-icon
+                hlm
+                name="lucideCalendar"
+                size="xs" />
+            <span>{{ formattedDate() }}</span>
+        </div>
         }
     </div>
 
@@ -46,8 +50,8 @@
             hlmBtn
             variant="ghost"
             size="icon-sm"
-            (click)="toggleImportant.emit(task().id)"
-            [attr.aria-label]="task().isImportant ? 'Remove importance' : 'Mark as important'">
+            [attr.aria-label]="task().isImportant ? 'Remove importance' : 'Mark as important'"
+            (click)="toggleImportant.emit(task().id)">
             <ng-icon
                 hlm
                 name="lucideStar"
@@ -55,17 +59,28 @@
                 [class.fill-yellow-400]="task().isImportant"
                 [class.text-yellow-400]="task().isImportant" />
         </button>
-        <button hlmBtn variant="ghost" size="icon-sm" (click)="edit.emit(task())" aria-label="Edit task">
-            <ng-icon hlm name="lucidePencil" size="sm" />
+        <button
+            hlmBtn
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Edit task"
+            (click)="edit.emit(task())">
+            <ng-icon
+                hlm
+                name="lucidePencil"
+                size="sm" />
         </button>
         <button
             hlmBtn
             variant="ghost"
             size="icon-sm"
-            (click)="delete.emit(task().id)"
             aria-label="Delete task"
-            class="hover:text-destructive">
-            <ng-icon hlm name="lucideTrash2" size="sm" />
+            class="hover:text-destructive"
+            (click)="delete.emit(task().id)">
+            <ng-icon
+                hlm
+                name="lucideTrash2"
+                size="sm" />
         </button>
     </div>
 </div>

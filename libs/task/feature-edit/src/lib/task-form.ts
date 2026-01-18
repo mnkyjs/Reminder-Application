@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
@@ -12,57 +12,54 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
 
 @Component({
     selector: 'ra-task-form',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        ReactiveFormsModule,
-        ...HlmButtonImports,
-        ...HlmCardImports,
-        ...HlmIconImports,
-        ...HlmInputImports,
-        ...HlmLabelImports,
-    ],
-    providers: [provideIcons({ lucideX })],
-    templateUrl: './task-form.html',
+    imports: [ReactiveFormsModule, ...HlmButtonImports, ...HlmCardImports, ...HlmIconImports, ...HlmInputImports, ...HlmLabelImports],
     styleUrl: './task-form.css',
+    templateUrl: './task-form.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [provideIcons({ lucideX })],
 })
-export class TaskForm {
-    readonly task = input<Task | null>(null);
+export class TaskForm implements OnInit {
     readonly close = output<void>();
+    readonly task = input<null | Task>(null);
 
     private readonly fb = inject(FormBuilder);
-    private readonly store = inject(TaskStore);
+    protected readonly form = this.fb.nonNullable.group({
+        description: [''],
+        dueDate: [''],
+        isImportant: [false],
+        title: ['', [Validators.required, Validators.minLength(1)]],
+    });
 
     protected readonly isEditMode = computed(() => this.task() !== null);
     protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
 
-    protected readonly form = this.fb.nonNullable.group({
-        title: ['', [Validators.required, Validators.minLength(1)]],
-        description: [''],
-        dueDate: [''],
-        isImportant: [false],
-    });
+    private readonly store = inject(TaskStore);
 
     ngOnInit(): void {
         const task = this.task();
         if (task) {
             this.form.patchValue({
-                title: task.title,
                 description: task.description ?? '',
                 dueDate: task.dueDate ? this.formatDateForInput(task.dueDate) : '',
                 isImportant: task.isImportant,
+                title: task.title,
             });
         }
+    }
+
+    protected onCancel(): void {
+        this.close.emit();
     }
 
     protected onSubmit(): void {
         if (this.form.invalid) return;
 
-        const { title, description, dueDate, isImportant } = this.form.getRawValue();
+        const { description, dueDate, isImportant, title } = this.form.getRawValue();
         const taskData = {
-            title: title.trim(),
             description: description.trim() || undefined,
             dueDate: dueDate ? new Date(dueDate) : null,
             isImportant,
+            title: title.trim(),
         };
 
         const existingTask = this.task();
@@ -72,10 +69,6 @@ export class TaskForm {
             this.store.addTask(taskData);
         }
 
-        this.close.emit();
-    }
-
-    protected onCancel(): void {
         this.close.emit();
     }
 

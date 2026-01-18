@@ -1,17 +1,40 @@
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" (click)="onCancel()">
-    <div hlmCard class="w-full max-w-md" (click)="$event.stopPropagation()">
-        <div hlmCardHeader class="flex flex-row items-center justify-between">
+<div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    (click)="onCancel()">
+    <div
+        hlmCard
+        class="w-full max-w-md"
+        (click)="$event.stopPropagation()">
+        <div
+            hlmCardHeader
+            class="flex flex-row items-center justify-between">
             <h2 hlmCardTitle>{{ title() }}</h2>
-            <button hlmBtn variant="ghost" size="icon-sm" (click)="onCancel()" aria-label="Close">
-                <ng-icon hlm name="lucideX" size="sm" />
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Close"
+                (click)="onCancel()">
+                <ng-icon
+                    hlm
+                    name="lucideX"
+                    size="sm" />
             </button>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div hlmCardContent class="space-y-4">
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()">
+            <div
+                hlmCardContent
+                class="space-y-4">
                 <!-- Title -->
                 <div class="space-y-2">
-                    <label hlmLabel for="title">Title *</label>
+                    <label
+                        hlmLabel
+                        for="title"
+                        >Title *</label
+                    >
                     <input
                         hlmInput
                         id="title"
@@ -23,7 +46,11 @@
 
                 <!-- Description -->
                 <div class="space-y-2">
-                    <label hlmLabel for="description">Description</label>
+                    <label
+                        hlmLabel
+                        for="description"
+                        >Description</label
+                    >
                     <textarea
                         hlmInput
                         id="description"
@@ -35,7 +62,11 @@
 
                 <!-- Due Date -->
                 <div class="space-y-2">
-                    <label hlmLabel for="dueDate">Due Date</label>
+                    <label
+                        hlmLabel
+                        for="dueDate"
+                        >Due Date</label
+                    >
                     <input
                         hlmInput
                         id="dueDate"
@@ -50,14 +81,30 @@
                         id="isImportant"
                         type="checkbox"
                         formControlName="isImportant"
-                        class="size-4 rounded border-input" />
-                    <label hlmLabel for="isImportant" class="cursor-pointer">Mark as important</label>
+                        class="border-input size-4 rounded" />
+                    <label
+                        hlmLabel
+                        for="isImportant"
+                        class="cursor-pointer"
+                        >Mark as important</label
+                    >
                 </div>
             </div>
 
-            <div hlmCardFooter class="flex justify-end gap-2">
-                <button hlmBtn variant="outline" type="button" (click)="onCancel()">Cancel</button>
-                <button hlmBtn type="submit" [disabled]="form.invalid">
+            <div
+                hlmCardFooter
+                class="flex justify-end gap-2">
+                <button
+                    hlmBtn
+                    variant="outline"
+                    type="button"
+                    (click)="onCancel()">
+                    Cancel
+                </button>
+                <button
+                    hlmBtn
+                    type="submit"
+                    [disabled]="form.invalid">
                     {{ isEditMode() ? 'Save Changes' : 'Create Task' }}
                 </button>
             </div>

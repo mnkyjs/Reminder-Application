@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { TaskStorage } from '@reminder/persistence';
 
 import { TaskStore } from './task-store';
-import { TaskStorage } from '@reminder/persistence';
 
 describe('TaskStore', () => {
     let store: TaskStore;
@@ -9,24 +9,21 @@ describe('TaskStore', () => {
 
     beforeEach(() => {
         const localStorageMock = {
-            getItem: jest.fn(),
-            setItem: jest.fn(),
-            removeItem: jest.fn(),
             clear: jest.fn(),
+            getItem: jest.fn(),
+            removeItem: jest.fn(),
+            setItem: jest.fn(),
         };
         Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
         mockStorage = {
             load: jest.fn().mockReturnValue([]),
-            save: jest.fn(),
             remove: jest.fn(),
+            save: jest.fn(),
         } as unknown as jest.Mocked<TaskStorage>;
 
         TestBed.configureTestingModule({
-            providers: [
-                TaskStore,
-                { provide: TaskStorage, useValue: mockStorage },
-            ],
+            providers: [TaskStore, { provide: TaskStorage, useValue: mockStorage }],
         });
 
         store = TestBed.inject(TaskStore);
@@ -56,10 +53,10 @@ describe('TaskStore', () => {
         it('should add a task with custom values', () => {
             const dueDate = new Date('2026-02-01');
             const task = store.addTask({
-                title: 'Custom Task',
                 description: 'A description',
                 dueDate,
                 isImportant: true,
+                title: 'Custom Task',
             });
 
             expect(task.title).toBe('Custom Task');
@@ -85,9 +82,7 @@ describe('TaskStore', () => {
             // Wait a bit to ensure different timestamp
             store.updateTask(task.id, { title: 'Updated' });
 
-            expect(store.tasks()[0].updatedAt.getTime()).toBeGreaterThanOrEqual(
-                originalUpdatedAt.getTime()
-            );
+            expect(store.tasks()[0].updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt.getTime());
         });
     });
 
@@ -140,7 +135,7 @@ describe('TaskStore', () => {
 
     describe('filtering', () => {
         beforeEach(() => {
-            store.addTask({ title: 'Buy groceries', description: 'Milk and eggs' });
+            store.addTask({ description: 'Milk and eggs', title: 'Buy groceries' });
             store.addTask({ title: 'Call mom' });
             store.addTask({ title: 'Write report' });
         });
@@ -175,9 +170,9 @@ describe('TaskStore', () => {
 
     describe('sorting', () => {
         beforeEach(() => {
-            store.addTask({ title: 'Zebra task', dueDate: new Date('2026-03-01') });
-            store.addTask({ title: 'Apple task', dueDate: new Date('2026-01-15') });
-            store.addTask({ title: 'Mango task', dueDate: null });
+            store.addTask({ dueDate: new Date('2026-03-01'), title: 'Zebra task' });
+            store.addTask({ dueDate: new Date('2026-01-15'), title: 'Apple task' });
+            store.addTask({ dueDate: null, title: 'Mango task' });
         });
 
         it('should sort by due date (asc)', () => {
@@ -235,8 +230,8 @@ describe('TaskStore', () => {
     describe('stats', () => {
         it('should compute correct stats', () => {
             store.addTask({ title: 'Task 1' });
-            store.addTask({ title: 'Task 2', isImportant: true });
-            store.addTask({ title: 'Task 3', dueDate: new Date('2020-01-01') }); // overdue
+            store.addTask({ isImportant: true, title: 'Task 2' });
+            store.addTask({ dueDate: new Date('2020-01-01'), title: 'Task 3' }); // overdue
 
             store.toggleComplete(store.tasks()[0].id);
 

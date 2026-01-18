@@ -11,44 +11,47 @@ import { classes } from '@spartan-ng/helm/utils';
 import { HlmDialogClose } from './hlm-dialog-close';
 
 @Component({
-	selector: 'hlm-dialog-content',
-	imports: [NgComponentOutlet, HlmDialogClose, HlmIconImports],
-	template: `
-		@if (component) {
-			<ng-container [ngComponentOutlet]="component" />
-		} @else {
-			<ng-content />
-		}
+    selector: 'hlm-dialog-content',
+    imports: [NgComponentOutlet, HlmDialogClose, HlmIconImports],
+    template: `
+        @if (component) {
+            <ng-container [ngComponentOutlet]="component" />
+        } @else {
+            <ng-content />
+        }
 
-		@if (showCloseButton()) {
-			<button hlmDialogClose>
-				<span class="sr-only">Close</span>
-				<ng-icon hlm size="sm" name="lucideX" />
-			</button>
-		}
-	`,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		'[attr.data-state]': 'state()',
-		'data-slot': 'dialog-content',
-	},
-	providers: [provideIcons({ lucideX })],
+        @if (showCloseButton()) {
+            <button hlmDialogClose>
+                <span class="sr-only">Close</span>
+                <ng-icon
+                    hlm
+                    size="sm"
+                    name="lucideX" />
+            </button>
+        }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        '[attr.data-state]': 'state()',
+        'data-slot': 'dialog-content',
+    },
+    providers: [provideIcons({ lucideX })],
 })
 export class HlmDialogContent {
-	private readonly _dialogContext = injectBrnDialogContext({ optional: true });
-	public readonly component = this._dialogContext?.$component;
+    private readonly _dialogContext = injectBrnDialogContext({ optional: true });
+    public readonly component = this._dialogContext?.$component;
 
-	public readonly showCloseButton = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
+    public readonly showCloseButton = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
 
-	private readonly _dialogRef = inject(BrnDialogRef);
+    private readonly _dialogRef = inject(BrnDialogRef);
 
-	public readonly state = computed(() => this._dialogRef?.state() ?? 'closed');
-	private readonly _dynamicComponentClass = this._dialogContext?.$dynamicComponentClass;
+    public readonly state = computed(() => this._dialogRef?.state() ?? 'closed');
+    private readonly _dynamicComponentClass = this._dialogContext?.$dynamicComponentClass;
 
-	constructor() {
-		classes(() => [
-			'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 mx-auto grid w-full max-w-[calc(100%-2rem)] gap-4 rounded-lg border p-6 shadow-lg data-[state=closed]:duration-200 data-[state=open]:duration-200 sm:mx-0 sm:max-w-lg',
-			this._dynamicComponentClass,
-		]);
-	}
+    constructor() {
+        classes(() => [
+            'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 mx-auto grid w-full max-w-[calc(100%-2rem)] gap-4 rounded-lg border p-6 shadow-lg data-[state=closed]:duration-200 data-[state=open]:duration-200 sm:mx-0 sm:max-w-lg',
+            this._dynamicComponentClass,
+        ]);
+    }
 }
