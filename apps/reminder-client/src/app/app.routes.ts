@@ -10,4 +10,8 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('@reminder/feature-list').then((m) => m.TaskList),
         path: 'tasks',
     },
+    {
+        path: '**',
+        redirectTo: 'tasks',
+    },
 ];
