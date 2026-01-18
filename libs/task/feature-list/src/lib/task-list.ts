@@ -105,6 +105,21 @@ export class TaskList {
         this.store.toggleImportant(id);
     }
 
+    onSaveTask(taskData: {
+        description?: string;
+        dueDate: Date | null;
+        isImportant: boolean;
+        title: string;
+    }): void {
+        const existingTask = this.editingTask();
+        if (existingTask) {
+            this.store.updateTask(existingTask.id, taskData);
+        } else {
+            this.store.addTask(taskData);
+        }
+        this.closeForm();
+    }
+
     protected toggleSortDirection(): void {
         this.store.toggleSortDirection();
     }

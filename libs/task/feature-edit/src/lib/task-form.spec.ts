@@ -1,4 +1,3 @@
-import { TaskStore } from '@reminder/data-access';
 import { Task } from '@reminder/models';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
@@ -6,15 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { TaskForm } from './task-form';
 
 describe('TaskForm', () => {
-    let mockStore: { addTask: jest.Mock; updateTask: jest.Mock };
-
-    beforeEach(() => {
-        mockStore = {
-            addTask: jest.fn(),
-            updateTask: jest.fn(),
-        };
-    });
-
     const setup = async (
         inputValues: { task: null | Task } = {
             task: null,
@@ -22,14 +12,14 @@ describe('TaskForm', () => {
     ) => {
         const user = userEvent.setup();
         const { fixture } = await render(TaskForm, {
-            providers: [{ provide: TaskStore, useValue: mockStore }],
             inputs: inputValues,
         });
         return { fixture, user };
     };
 
-    it('should create a new task when valid form is submitted', async () => {
-        const { user } = await setup();
+    it('should emit save event with task data when valid form is submitted (Create Mode)', async () => {
+        const { fixture, user } = await setup();
+        const saveSpy = jest.spyOn(fixture.componentInstance.save, 'emit');
 
         const titleInput = screen.getByLabelText(/title/i);
         const descriptionInput = screen.getByLabelText(/description/i);
@@ -44,8 +34,8 @@ describe('TaskForm', () => {
 
         await user.click(submitButton);
 
-        expect(mockStore.addTask).toHaveBeenCalledTimes(1);
-        expect(mockStore.addTask).toHaveBeenCalledWith({
+        expect(saveSpy).toHaveBeenCalledTimes(1);
+        expect(saveSpy).toHaveBeenCalledWith({
             description: 'New Description',
             dueDate: null,
             isImportant: true,
@@ -53,7 +43,7 @@ describe('TaskForm', () => {
         });
     });
 
-    it('should update an existing task when valid form is submitted', async () => {
+    it('should emit save event with updated data when valid form is submitted (Edit Mode)', async () => {
         const existingTask = {
             createdAt: new Date(),
             description: 'Old Description',
@@ -65,7 +55,8 @@ describe('TaskForm', () => {
             updatedAt: new Date(),
         };
 
-        const { user } = await setup({ task: existingTask });
+        const { fixture, user } = await setup({ task: existingTask });
+        const saveSpy = jest.spyOn(fixture.componentInstance.save, 'emit');
 
         const titleInput = screen.getByLabelText(/title/i);
         const submitButton = screen.getByRole('button', { name: /save changes/i });
@@ -77,8 +68,8 @@ describe('TaskForm', () => {
 
         await user.click(submitButton);
 
-        expect(mockStore.updateTask).toHaveBeenCalledTimes(1);
-        expect(mockStore.updateTask).toHaveBeenCalledWith('123', {
+        expect(saveSpy).toHaveBeenCalledTimes(1);
+        expect(saveSpy).toHaveBeenCalledWith({
             description: 'Old Description',
             dueDate: expect.any(Date),
             isImportant: false,
@@ -86,8 +77,9 @@ describe('TaskForm', () => {
         });
     });
 
-    it('should not submit if required fields are missing', async () => {
-        const { user } = await setup();
+    it('should not emit save event if required fields are missing', async () => {
+        const { fixture, user } = await setup();
+        const saveSpy = jest.spyOn(fixture.componentInstance.save, 'emit');
 
         const submitButton = screen.getByRole('button', { name: /create task/i });
 
@@ -95,7 +87,7 @@ describe('TaskForm', () => {
 
         await user.click(submitButton);
 
-        expect(mockStore.addTask).not.toHaveBeenCalled();
+        expect(saveSpy).not.toHaveBeenCalled();
     });
 
     it('should emit cancel event when cancel button is clicked', async () => {

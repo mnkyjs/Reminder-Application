@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
-import { TaskStore } from '@reminder/data-access';
 import { Task } from '@reminder/models';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -20,12 +19,16 @@ import { format } from 'date-fns';
     providers: [provideIcons({ lucideX })],
 })
 export class TaskForm implements OnInit {
-    private readonly store = inject(TaskStore);
-
     readonly task = input<null | Task>(null);
     protected readonly isEditMode = computed(() => this.task() !== null);
     protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
 
+    readonly save = output<{
+        description?: string;
+        dueDate: Date | null;
+        isImportant: boolean;
+        title: string;
+    }>();
     readonly cancelEdit = output<void>();
 
     protected readonly form = new FormGroup({
@@ -62,13 +65,7 @@ export class TaskForm implements OnInit {
             title: title.trim(),
         };
 
-        const existingTask = this.task();
-        if (existingTask) {
-            this.store.updateTask(existingTask.id, taskData);
-        } else {
-            this.store.addTask(taskData);
-        }
-
+        this.save.emit(taskData);
         this.cancelEdit.emit();
     }
 

@@ -115,6 +115,7 @@
     @if (showForm()) {
     <ra-task-form
         [task]="editingTask()"
+        (save)="onSaveTask($event)"
         (cancelEdit)="closeForm()" />
     }
     <hlm-alert-dialog [state]="deleteDialogOpen() ? 'open' : 'closed'">
