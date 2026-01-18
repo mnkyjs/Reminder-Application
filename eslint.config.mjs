@@ -10,33 +10,33 @@ export default [
         ...perfectionist.configs['recommended-natural'],
         rules: {
             ...perfectionist.configs['recommended-natural'].rules,
+            'perfectionist/sort-classes': 'off',
             'perfectionist/sort-objects': [
                 'error',
                 {
-                    type: 'natural',
-                    order: 'asc',
-                    groups: ['angular-selector', 'angular-imports', 'angular-view', 'angular-metadata', 'unknown'],
                     customGroups: [
                         {
-                            groupName: 'angular-selector',
                             elementNamePattern: '^selector$',
+                            groupName: 'angular-selector',
                         },
                         {
-                            groupName: 'angular-imports',
                             elementNamePattern: '^(standalone|imports)$',
+                            groupName: 'angular-imports',
                         },
                         {
-                            groupName: 'angular-view',
                             elementNamePattern: '^(template|templateUrl|style|styles|styleUrl|styleUrls)$',
+                            groupName: 'angular-view',
                         },
                         {
-                            groupName: 'angular-metadata',
                             elementNamePattern: '^(host|hostDirectives|animations|changeDetection|providers|exportAs)$',
+                            groupName: 'angular-metadata',
                         },
                     ],
+                    groups: ['angular-selector', 'angular-imports', 'angular-view', 'angular-metadata', 'unknown'],
+                    order: 'asc',
+                    type: 'natural',
                 },
             ],
-            'perfectionist/sort-classes': 'off',
         },
     },
     {
@@ -48,14 +48,14 @@ export default [
             '@nx/enforce-module-boundaries': [
                 'error',
                 {
-                    enforceBuildableLibDependency: true,
                     allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
                     depConstraints: [
                         {
-                            sourceTag: '*',
                             onlyDependOnLibsWithTags: ['*'],
+                            sourceTag: '*',
                         },
                     ],
+                    enforceBuildableLibDependency: true,
                 },
             ],
         },
