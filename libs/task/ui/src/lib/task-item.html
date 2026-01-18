@@ -1,6 +1,9 @@
 <div
     class="group bg-card hover:bg-accent/50 flex items-center gap-3 rounded-lg border p-4 transition-colors"
-    [ngClass]="{ 'border-primary/50': task().isImportant, 'bg-muted/30': task().isCompleted }">
+    [ngClass]="{
+        'border-l-4 border-l-yellow-400 border-yellow-400/30 bg-yellow-50/5': task().isImportant && !task().isCompleted,
+        'bg-muted/30': task().isCompleted
+    }">
     <!-- Checkbox -->
     <button
         type="button"
@@ -23,12 +26,20 @@
 
     <!-- Content -->
     <div class="min-w-0 flex-1">
-        <h3
-            class="truncate font-medium"
-            [class.line-through]="task().isCompleted"
-            [class.text-muted-foreground]="task().isCompleted">
-            {{ task().title }}
-        </h3>
+        <div class="flex items-center gap-2">
+            <h3
+                class="truncate font-medium"
+                [class.line-through]="task().isCompleted"
+                [class.text-muted-foreground]="task().isCompleted">
+                {{ task().title }}
+            </h3>
+            @if (task().isImportant && !task().isCompleted) {
+            <span class="inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                <ng-icon hlm name="lucideStar" size="xs" class="fill-current" />
+                Important
+            </span>
+            }
+        </div>
         @if (task().description) {
         <p class="text-muted-foreground truncate text-sm">{{ task().description }}</p>
         } @if (task().dueDate) {

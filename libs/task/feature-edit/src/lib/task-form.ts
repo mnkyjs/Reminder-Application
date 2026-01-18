@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideIcons } from '@ng-icons/core';
 import { lucideX } from '@ng-icons/lucide';
 import { TaskStore } from '@reminder/data-access';
@@ -22,12 +22,11 @@ export class TaskForm implements OnInit {
     readonly cancelEdit = output<void>();
     readonly task = input<null | Task>(null);
 
-    private readonly fb = inject(FormBuilder);
-    protected readonly form = this.fb.nonNullable.group({
-        description: [''],
-        dueDate: [''],
-        isImportant: [false],
-        title: ['', [Validators.required, Validators.minLength(1)]],
+    protected readonly form = new FormGroup({
+        description: new FormControl('', { nonNullable: true }),
+        dueDate: new FormControl('', { nonNullable: true }),
+        isImportant: new FormControl(false, { nonNullable: true }),
+        title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(1)] }),
     });
 
     protected readonly isEditMode = computed(() => this.task() !== null);

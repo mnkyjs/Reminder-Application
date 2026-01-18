@@ -66,16 +66,36 @@ export class TaskStore {
 
     readonly tasks = this._tasks.asReadonly();
 
-    private readonly storage = inject(TaskStorage);
+    private readonly FILTER_STORAGE_KEY = 'task-filter';
 
+    private readonly storage = inject(TaskStorage);
     private readonly STORAGE_KEY = 'tasks';
 
     constructor() {
         this._tasks.set(this.storage.load<Task[]>(this.STORAGE_KEY, []));
 
+        // Load saved filter preferences
+        const savedFilter = this.storage.load<null | Pick<TaskFilter, 'sortBy' | 'sortDirection'>>(this.FILTER_STORAGE_KEY, null);
+        if (savedFilter) {
+            this._filter.update((f) => ({
+                ...f,
+                sortBy: savedFilter.sortBy ?? f.sortBy,
+                sortDirection: savedFilter.sortDirection ?? f.sortDirection,
+            }));
+        }
+
         effect(() => {
             const tasks = this._tasks();
             this.storage.save(this.STORAGE_KEY, tasks);
+        });
+
+        // Persist filter preferences when they change
+        effect(() => {
+            const filter = this._filter();
+            this.storage.save(this.FILTER_STORAGE_KEY, {
+                sortBy: filter.sortBy,
+                sortDirection: filter.sortDirection,
+            });
         });
     }
 
