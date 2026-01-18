@@ -20,8 +20,13 @@ import { format } from 'date-fns';
     providers: [provideIcons({ lucideX })],
 })
 export class TaskForm implements OnInit {
-    readonly cancelEdit = output<void>();
+    private readonly store = inject(TaskStore);
+
     readonly task = input<null | Task>(null);
+    protected readonly isEditMode = computed(() => this.task() !== null);
+    protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
+
+    readonly cancelEdit = output<void>();
 
     protected readonly form = new FormGroup({
         description: new FormControl('', { nonNullable: true }),
@@ -29,11 +34,6 @@ export class TaskForm implements OnInit {
         isImportant: new FormControl(false, { nonNullable: true }),
         title: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(1)] }),
     });
-
-    protected readonly isEditMode = computed(() => this.task() !== null);
-    protected readonly title = computed(() => (this.isEditMode() ? 'Edit Task' : 'Create Task'));
-
-    private readonly store = inject(TaskStore);
 
     ngOnInit(): void {
         const task = this.task();
