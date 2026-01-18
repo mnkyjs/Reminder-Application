@@ -9,6 +9,7 @@ import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { format } from 'date-fns';
 
 @Component({
     selector: 'ra-task-form',
@@ -72,6 +73,6 @@ export class TaskForm implements OnInit {
     }
 
     private formatDateForInput(date: Date): string {
-        return date.toISOString().split('T')[0];
+        return format(date, 'yyyy-MM-dd');
     }
 }
