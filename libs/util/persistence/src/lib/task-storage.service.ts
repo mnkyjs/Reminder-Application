@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -38,10 +38,18 @@ export class TaskStorage {
   }
 
   private dateReviver(key: string, value: unknown): unknown {
+    // Handle wrapped Date objects
     if (value && typeof value === 'object' && '__type' in value) {
       const obj = value as { __type: string; value: string };
       if (obj.__type === 'Date') {
         return new Date(obj.value);
+      }
+    }
+    // Handle plain ISO date strings (legacy format)
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return date;
       }
     }
     return value;
